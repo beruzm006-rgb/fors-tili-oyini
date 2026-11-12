@@ -1,0 +1,1181 @@
+<!DOCTYPE html>
+<html lang="uz" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fors Tili Lug‘at O‘yini | Malik Abdusamatov Darsligi</title>
+    <meta name="description" content="Malik Abdusamatovning 'Fors tili' darsligi asosidagi interaktiv lug'at va so'z yodlash o'yinlari platformasi. Barcha 12 ta bo'lim so'zlari." />
+    <meta name="google-site-verification" content="oNBkr6ek7lAXc-Zwhke8FasEECUDF3fCmJaHUZbRvmc" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Vazirmatn:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .persian-text {
+            font-family: 'Vazirmatn', sans-serif;
+            direction: rtl;
+        }
+        /* Telegram Spoiler Blur Style */
+        .spoiler-blur {
+            filter: blur(6px);
+            user-select: none;
+            cursor: pointer;
+            transition: filter 0.3s ease, background-color 0.3s ease;
+            background-color: rgba(100, 116, 139, 0.12);
+            padding: 2px 8px;
+            border-radius: 6px;
+        }
+        .spoiler-blur:hover {
+            filter: blur(4px);
+            background-color: rgba(100, 116, 139, 0.2);
+        }
+        .spoiler-revealed {
+            filter: blur(0px);
+            user-select: text;
+            cursor: pointer;
+            transition: filter 0.3s ease;
+            background-color: rgba(16, 185, 129, 0.1);
+            padding: 2px 8px;
+            border-radius: 6px;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 h-full flex flex-col antialiased selection:bg-rose-500 selection:text-white">
+
+    <!-- Header / Navbar -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-rose-600 to-amber-500 flex items-center justify-center text-white font-black shadow-md shadow-rose-500/20 text-lg persian-text">
+                    ف
+                </div>
+                <div>
+                    <h1 class="font-extrabold text-slate-900 text-base sm:text-lg tracking-tight">Fors Tili Lug‘ati</h1>
+                    <p class="text-xs text-slate-500 font-medium">Malik Abdusamatov darsligi</p>
+                </div>
+            </div>
+
+            <!-- Global Actions -->
+            <div class="flex items-center gap-2 sm:gap-3">
+                <!-- Global Spoiler Toggle Button -->
+                <button onclick="toggleGlobalPronunciation()" id="togglePronunciationBtn" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-medium border transition-all bg-slate-100 text-slate-700 border-slate-200 hover:bg-slate-200/70" title="Barcha transkripsiyalarni ochish yoki yashirish">
+                    <i data-lucide="eye-off" id="pronunciationEyeIcon" class="w-4 h-4"></i>
+                    <span id="pronunciationStateText">Spoyler (Xira)</span>
+                </button>
+
+                <!-- Unit Selector Dropdown -->
+                <select id="unitSelector" onchange="changeUnit(this.value)" class="bg-slate-100 border border-slate-200 text-slate-700 text-xs sm:text-sm rounded-xl px-3 py-2 font-semibold focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 cursor-pointer transition">
+                    <!-- Populated by JS -->
+                </select>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <nav class="bg-white border-b border-slate-200 shadow-xs">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex overflow-x-auto no-scrollbar space-x-2 sm:space-x-4 py-2">
+            <button onclick="switchMode('cards')" id="tab-cards" class="flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap bg-rose-50 text-rose-600 shadow-xs">
+                <i data-lucide="layers" class="w-4 h-4"></i> Kartochkalar & Jadval
+            </button>
+            <button onclick="switchMode('quiz')" id="tab-quiz" class="flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap text-slate-600 hover:bg-slate-100">
+                <i data-lucide="help-circle" class="w-4 h-4"></i> Test (4 variant)
+            </button>
+            <button onclick="switchMode('matching')" id="tab-matching" class="flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap text-slate-600 hover:bg-slate-100">
+                <i data-lucide="puzzle" class="w-4 h-4"></i> Juftlikni toping
+            </button>
+            <button onclick="switchMode('typing')" id="tab-typing" class="flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap text-slate-600 hover:bg-slate-100">
+                <i data-lucide="keyboard" class="w-4 h-4"></i> Yozma mashq
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content Container -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col">
+
+        <!-- ================= MODE 1: CARDS & TABLE ================= -->
+        <section id="mode-cards" class="flex flex-col gap-6 flex-1">
+            <!-- Flashcard Arena -->
+            <div class="bg-white rounded-3xl border border-slate-200/80 shadow-sm p-6 sm:p-10 flex flex-col items-center justify-center relative overflow-hidden max-w-2xl mx-auto w-full">
+                <!-- Top Info -->
+                <div class="w-full flex items-center justify-between mb-6">
+                    <span id="flashcardCounter" class="text-xs font-bold uppercase tracking-wider text-slate-400 bg-slate-100 px-3 py-1 rounded-full">1 / 25</span>
+                    <button onclick="toggleCardFavorite()" id="cardFavBtn" class="text-slate-300 hover:text-amber-500 transition">
+                        <i data-lucide="star" class="w-6 h-6"></i>
+                    </button>
+                </div>
+
+                <!-- Card Flip Container -->
+                <div class="w-full min-h-[240px] flex flex-col items-center justify-center cursor-pointer select-none py-6 group" onclick="flipFlashcard()">
+                    <div id="flashcardFront" class="flex flex-col items-center gap-3 transition-all duration-300">
+                        <span class="text-xs font-bold uppercase tracking-widest text-rose-500 bg-rose-50 px-3 py-1 rounded-lg">Forscha</span>
+                        <h2 id="fcPersian" class="persian-text text-5xl sm:text-6xl font-black text-slate-900 tracking-wide py-2">آب</h2>
+                        <div class="mt-2 text-center">
+                            <span id="fcPronunciationFront" onclick="event.stopPropagation(); toggleSpoiler(this)" class="spoiler-blur text-sm font-medium text-slate-600" title="Ko‘rish uchun bosing">[ ob ]</span>
+                        </div>
+                        <p class="text-xs text-slate-400 mt-4 flex items-center gap-1 group-hover:text-rose-600 transition">
+                            <i data-lucide="rotate-cw" class="w-3.5 h-3.5"></i> Tarjimani ko'rish uchun bosing
+                        </p>
+                    </div>
+
+                    <div id="flashcardBack" class="hidden flex flex-col items-center gap-3 transition-all duration-300">
+                        <span class="text-xs font-bold uppercase tracking-widest text-emerald-600 bg-emerald-50 px-3 py-1 rounded-lg">O‘zbekcha tarjimasi</span>
+                        <h2 id="fcUzbek" class="text-3xl sm:text-4xl font-extrabold text-slate-900 text-center py-2">Suv</h2>
+                        <p id="fcPronunciationBack" class="text-sm font-semibold text-slate-500 bg-slate-100 px-3 py-1 rounded-lg">O‘qilishi: ob</p>
+                        <p class="text-xs text-emerald-600 font-semibold mt-4 flex items-center gap-1">
+                            <span class="persian-text text-base" id="fcPersianMini">آب</span> — asl so'z
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Controls -->
+                <div class="flex items-center gap-4 mt-6 w-full justify-between pt-4 border-t border-slate-100">
+                    <button onclick="prevFlashcard()" class="flex items-center gap-2 px-5 py-2.5 rounded-2xl border border-slate-200 text-slate-700 font-bold hover:bg-slate-50 transition active:scale-95 text-sm">
+                        <i data-lucide="arrow-left" class="w-4 h-4"></i> Oldingi
+                    </button>
+                    <button onclick="markWordMastered()" id="masteredBtn" class="flex items-center gap-1.5 px-4 py-2.5 rounded-2xl bg-emerald-50 text-emerald-700 border border-emerald-200 font-bold hover:bg-emerald-100 transition text-sm">
+                        <i data-lucide="check" class="w-4 h-4"></i> Yodladim
+                    </button>
+                    <button onclick="nextFlashcard()" class="flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-rose-600 text-white font-bold hover:bg-rose-700 transition shadow-lg shadow-rose-600/20 active:scale-95 text-sm">
+                        Keyingi <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Vocabulary Table & Search -->
+            <div class="bg-white rounded-3xl border border-slate-200/80 shadow-sm p-6 sm:p-8 flex flex-col gap-4">
+                <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div>
+                        <h3 class="font-extrabold text-slate-900 text-lg">Bo‘limdagi barcha so‘zlar</h3>
+                        <p class="text-xs text-slate-500">Jadval ko‘rinishida o‘qish va takrorlash uchun</p>
+                    </div>
+                    <div class="relative w-full sm:w-72">
+                        <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+                        <input type="text" id="vocabSearchInput" oninput="filterVocabTable(this.value)" placeholder="So'zni qidirish..." class="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500">
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto rounded-2xl border border-slate-100">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-slate-100/70 text-slate-600 text-xs font-bold uppercase tracking-wider">
+                                <th class="py-3 px-4 w-12 text-center">№</th>
+                                <th class="py-3 px-4 text-right">Forscha</th>
+                                <th class="py-3 px-4">O‘zbekcha ma’nosi</th>
+                                <th class="py-3 px-4">O‘qilishi</th>
+                                <th class="py-3 px-4 text-center">Holat</th>
+                            </tr>
+                        </thead>
+                        <tbody id="vocabTableBody" class="divide-y divide-slate-100 text-sm">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= MODE 2: QUIZ ================= -->
+        <section id="mode-quiz" class="hidden flex-col gap-6 flex-1 max-w-2xl mx-auto w-full">
+            <div class="bg-white rounded-3xl border border-slate-200/80 shadow-sm p-6 sm:p-10 flex flex-col items-center relative overflow-hidden">
+                <!-- Quiz Header & Progress -->
+                <div class="w-full flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-2">
+                        <span id="quizProgressText" class="text-xs font-bold uppercase tracking-wider text-slate-500 bg-slate-100 px-3 py-1 rounded-full">1 / 10</span>
+                        <select id="quizDirectionSelect" onchange="initQuiz()" class="bg-slate-100 border border-slate-200 text-slate-700 text-xs rounded-xl px-2.5 py-1 font-semibold focus:outline-none cursor-pointer">
+                            <option value="fa-uz">Forscha ➔ O‘zbekcha</option>
+                            <option value="uz-fa">O‘zbekcha ➔ Forscha</option>
+                        </select>
+                    </div>
+                    <button onclick="initQuiz()" class="text-xs font-bold text-rose-600 hover:text-rose-700 flex items-center gap-1 bg-rose-50 px-3 py-1 rounded-xl">
+                        <i data-lucide="rotate-cw" class="w-3.5 h-3.5"></i> Qayta boshlash
+                    </button>
+                </div>
+                <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden mb-8">
+                    <div id="quizProgressBar" class="bg-rose-600 h-full w-0 transition-all duration-300"></div>
+                </div>
+
+                <!-- Question Prompt -->
+                <div class="flex flex-col items-center justify-center my-4 text-center w-full">
+                    <span id="quizPromptLabel" class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-2">O‘zbekcha tarjimasini tanlang</span>
+                    <h2 id="quizQuestionWord" class="persian-text text-4xl sm:text-5xl font-bold text-slate-900 py-1">آب</h2>
+                    <div class="mt-2">
+                        <span id="quizQuestionHint" onclick="toggleSpoiler(this)" class="spoiler-blur text-sm font-medium text-slate-500" title="Ko‘rish uchun bosing">[ ob ]</span>
+                    </div>
+                </div>
+
+                <!-- Options Grid -->
+                <div id="quizOptionsGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full mt-6">
+                    <!-- Populated by JS -->
+                </div>
+
+                <!-- Next Question Button -->
+                <button id="quizNextBtn" onclick="nextQuizQuestion()" class="hidden mt-8 w-full py-3.5 bg-slate-900 text-white font-bold rounded-2xl hover:bg-slate-800 transition shadow-lg shadow-slate-900/10 flex items-center justify-center gap-2">
+                    Keyingi savol <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- ================= MODE 3: MATCHING GAME ================= -->
+        <section id="mode-matching" class="hidden flex-col gap-6 flex-1 max-w-4xl mx-auto w-full">
+            <div class="bg-white rounded-3xl border border-slate-200/80 shadow-sm p-6 sm:p-8 flex flex-col items-center">
+                <div class="w-full flex flex-col sm:flex-row items-center justify-between gap-4 mb-6 pb-4 border-b border-slate-100">
+                    <div>
+                        <h3 class="font-extrabold text-slate-900 text-lg">Juftlikni toping</h3>
+                        <p class="text-xs text-slate-500">Forscha so‘zni uning o‘zbekcha tarjimosi bilan moslang</p>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <div class="bg-amber-50 text-amber-700 px-4 py-1.5 rounded-xl font-bold text-sm border border-amber-200 flex items-center gap-1.5">
+                            <i data-lucide="timer" class="w-4 h-4"></i> <span id="matchingTimer">00:00</span>
+                        </div>
+                        <button onclick="initMatchingGame()" class="px-4 py-1.5 bg-rose-600 text-white rounded-xl font-bold text-sm shadow-md shadow-rose-600/20 hover:bg-rose-700 transition">
+                            Yangi o‘yin
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Game Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+                    <!-- Persian Column -->
+                    <div class="flex flex-col gap-3">
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider text-center">Forscha so‘zlar</span>
+                        <div id="matchingPersianCol" class="flex flex-col gap-2.5">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+                    <!-- Uzbek Column -->
+                    <div class="flex flex-col gap-3">
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider text-center">O‘zbekcha tarjimalari</span>
+                        <div id="matchingUzbekCol" class="flex flex-col gap-2.5">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= MODE 4: TYPING PRACTICE ================= -->
+        <section id="mode-typing" class="hidden flex-col gap-6 flex-1 max-w-xl mx-auto w-full">
+            <div class="bg-white rounded-3xl border border-slate-200/80 shadow-sm p-6 sm:p-10 flex flex-col items-center relative">
+                <div class="w-full flex items-center justify-between mb-6">
+                    <span id="typingCounter" class="text-xs font-bold uppercase tracking-wider text-slate-400 bg-slate-100 px-3 py-1 rounded-full">1 / 25</span>
+                    <button onclick="initTypingPractice()" class="text-xs font-bold text-rose-600 hover:text-rose-700 flex items-center gap-1">
+                        <i data-lucide="rotate-cw" class="w-3.5 h-3.5"></i> Qayta boshlash
+                    </button>
+                </div>
+
+                <div class="flex flex-col items-center justify-center my-6 text-center w-full">
+                    <span class="text-xs font-bold uppercase tracking-widest text-rose-500 bg-rose-50 px-3 py-1 rounded-lg mb-3">Forscha so‘z</span>
+                    <h2 id="typingPersianWord" class="persian-text text-5xl sm:text-6xl font-black text-slate-900 py-2">آب</h2>
+                    <div class="mt-2">
+                        <span id="typingPronunciationSpoiler" onclick="toggleSpoiler(this)" class="spoiler-blur text-sm font-medium text-slate-500" title="Ko‘rish uchun bosing">[ ob ]</span>
+                    </div>
+                </div>
+
+                <form onsubmit="checkTypingAnswer(event)" class="w-full flex flex-col gap-4 mt-4">
+                    <div class="relative">
+                        <input type="text" id="typingInput" autocomplete="off" placeholder="O‘zbekcha tarjimasini yozing..." class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3.5 text-center font-bold text-slate-800 text-lg focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 transition">
+                    </div>
+                    <button type="submit" id="typingSubmitBtn" class="w-full py-3.5 bg-rose-600 text-white font-bold rounded-2xl hover:bg-rose-700 transition shadow-lg shadow-rose-600/20 active:scale-95 flex items-center justify-center gap-2">
+                        Tekshirish <i data-lucide="check" class="w-4 h-4"></i>
+                    </button>
+                </form>
+
+                <!-- Feedback Box -->
+                <div id="typingHintBox" class="hidden mt-4 w-full p-4 rounded-2xl text-center font-bold text-sm"></div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-4 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 text-center text-xs text-slate-500 font-medium">
+            Malik Abdusamatov — «Fors tili» darsligi asosida yaratildi © 2026
+        </div>
+    </footer>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // ================= DATA: ALL 12 UNITS =================
+        const UNITS_DATA = [
+            {
+                id: 0,
+                title: "1-darsgacha (Kirish va fonetika)",
+                words: [
+                    { fa: "آب", uz: "suv", tr: "ob" },
+                    { fa: "کوه", uz: "tog‘", tr: "kuh" },
+                    { fa: "تير", uz: "o‘q", tr: "tir" },
+                    { fa: "آسمان", uz: "osmon", tr: "osmon" },
+                    { fa: "مور", uz: "chumoli", tr: "mur" },
+                    { fa: "سیب", uz: "olma", tr: "sib" },
+                    { fa: "ناک", uz: "nok", tr: "nok" },
+                    { fa: "کوتاه", uz: "qisqa", tr: "kutoh" },
+                    { fa: "سير", uz: "chesnok", tr: "sir" },
+                    { fa: "بادام", uz: "bodom", tr: "bodom" },
+                    { fa: "دوتور", uz: "dutor", tr: "dutor" },
+                    { fa: "بیمار", uz: "kasal", tr: "bimor" },
+                    { fa: "بازار", uz: "bozor", tr: "bozor" },
+                    { fa: "روی", uz: "yuz", tr: "ruy" },
+                    { fa: "زیبا", uz: "chiroyli", tr: "zibo" },
+                    { fa: "قلم", uz: "ruchka", tr: "qalam" },
+                    { fa: "نامه", uz: "xat", tr: "nome" },
+                    { fa: "بهار", uz: "bahor", tr: "bahor" },
+                    { fa: "اداره", uz: "idora", tr: "edore" },
+                    { fa: "مادر", uz: "ona", tr: "modar" },
+                    { fa: "مرغ", uz: "tovuq", tr: "morğ" },
+                    { fa: "پدر", uz: "ota", tr: "pedar" },
+                    { fa: "امید", uz: "umid", tr: "umid" },
+                    { fa: "تهران", uz: "Tehron (shahri)", tr: "tehron" },
+                    { fa: "گربه", uz: "mushuk", tr: "gorbe" },
+                    { fa: "مداد", uz: "qalam", tr: "medod" },
+                    { fa: "شتر", uz: "tuya", tr: "shotur" }
+                ]
+            },
+            {
+                id: 1,
+                title: "1-dars",
+                words: [
+                    { fa: "این", uz: "bu", tr: "in" },
+                    { fa: "آن", uz: "u", tr: "on" },
+                    { fa: "چه", uz: "nima", tr: "che" },
+                    { fa: "که", uz: "kim", tr: "ke" },
+                    { fa: "در", uz: "eshik", tr: "dar" },
+                    { fa: "کتاب", uz: "kitob", tr: "ketob" },
+                    { fa: "دفتر", uz: "daftar", tr: "daftar" },
+                    { fa: "میز", uz: "stol", tr: "miz" },
+                    { fa: "تخته", uz: "taxta, doska", tr: "taxte" },
+                    { fa: "و", uz: "va (bog‘lovchi)", tr: "va" },
+                    { fa: "گچ", uz: "bo‘r", tr: "gach" },
+                    { fa: "قلم", uz: "ruchka", tr: "qalam" },
+                    { fa: "دیوار", uz: "devor", tr: "divor" },
+                    { fa: "سفید", uz: "oq", tr: "sefid" },
+                    { fa: "کارگر", uz: "ishchi", tr: "korgar" },
+                    { fa: "سرخ", uz: "qizil", tr: "sorx" },
+                    { fa: "دانشجو", uz: "talaba", tr: "doneshju" },
+                    { fa: "دانشیار", uz: "o‘qituvchi", tr: "doneshyor" },
+                    { fa: "شاگرد", uz: "o‘quvchi", tr: "shogerd" },
+                    { fa: "خوب", uz: "yaxshi", tr: "xub" },
+                    { fa: "بد", uz: "yomon", tr: "bad" }
+                ]
+            },
+            {
+                id: 2,
+                title: "2-dars",
+                words: [
+                    { fa: "چیز", uz: "narsa", tr: "chiz" },
+                    { fa: "چه چیزی", uz: "narsa, nima narsa", tr: "che chiz-i" },
+                    { fa: "کیف", uz: "portfel", tr: "kif" },
+                    { fa: "کاغذ", uz: "qog‘oz", tr: "kog'az" },
+                    { fa: "پنجره", uz: "deraza", tr: "panjare" },
+                    { fa: "صندلی", uz: "stul", tr: "sandali" },
+                    { fa: "مجله", uz: "jurnal", tr: "majalle" },
+                    { fa: "مداد", uz: "qalam", tr: "medod" },
+                    { fa: "قلم", uz: "ruchka", tr: "qalam" },
+                    { fa: "سیاه", uz: "qora", tr: "siyoh" },
+                    { fa: "پس", uz: "demak, xo‘sh, xo‘p", tr: "pas" },
+                    { fa: "دختر", uz: "qiz, qiz bola", tr: "doxtar" },
+                    { fa: "بله", uz: "ha", tr: "bale" },
+                    { fa: "نو", uz: "yangi", tr: "no'u" },
+                    { fa: "کهنه", uz: "eski", tr: "kohne" },
+                    { fa: "خیر", uz: "yo‘q", tr: "naxeyr" }
+                ]
+            },
+            {
+                id: 3,
+                title: "3-dars",
+                words: [
+                    { fa: "اینجا", uz: "bu yer, bu yerda, bu yerga", tr: "injo" },
+                    { fa: "آنجا", uz: "u yerda, u yerga", tr: "onjo" },
+                    { fa: "کجا", uz: "qayer, qayerda, qayerga", tr: "kojo" },
+                    { fa: "چطور", uz: "qanday, qanaqa", tr: "chetour" },
+                    { fa: "کوچک", uz: "kichik", tr: "kuchek" },
+                    { fa: "بزرگ", uz: "katta", tr: "bozorg" },
+                    { fa: "قشنگ", uz: "chiroyli", tr: "qashang" },
+                    { fa: "رفیق", uz: "o‘rtoq", tr: "rafiq" },
+                    { fa: "سلطانوف", uz: "Sultonov", tr: "soltonof" },
+                    { fa: "دانشگاه", uz: "universitet", tr: "doneshgoh" },
+                    { fa: "دانشکده", uz: "fakultet", tr: "doneshkade" },
+                    { fa: "کلاس", uz: "klass, auditoriya", tr: "kelos" },
+                    { fa: "ورزشگاه", uz: "stadion", tr: "varzeshgoh" },
+                    { fa: "روشن", uz: "yorug‘, ravshan", tr: "roushan" },
+                    { fa: "سبز", uz: "yashil", tr: "sabz" },
+                    { fa: "زرد", uz: "sariq", tr: "zard" },
+                    { fa: "مرد", uz: "erkak, erkak kishi", tr: "mard" },
+                    { fa: "زن", uz: "ayol, xotin", tr: "zan" },
+                    { fa: "چکاره", uz: "kim (mutaxassisligi)", tr: "chekore" },
+                    { fa: "نویسنده", uz: "yozuvchi", tr: "navisande" },
+                    { fa: "پزشک", uz: "vrach", tr: "pezeshk" },
+                    { fa: "پسر", uz: "o‘g‘il, o‘g‘il bola", tr: "pesar" },
+                    { fa: "فاطمه", uz: "Fotima", tr: "foteme" },
+                    { fa: "مشهور", uz: "mashhur", tr: "mashhur" },
+                    { fa: "چه رنگی", uz: "qaysi rangda", tr: "che rangi" },
+                    { fa: "غنی", uz: "boy", tr: "g'ani" }
+                ]
+            },
+            {
+                id: 4,
+                title: "4-dars",
+                words: [
+                    { fa: "همه", uz: "hamma", tr: "hame" },
+                    { fa: "ما همه", uz: "hammamiz", tr: "mo hame" },
+                    { fa: "سرباز", uz: "askar", tr: "sarboz" },
+                    { fa: "مهندس", uz: "injener, muhandis", tr: "mohandes" },
+                    { fa: "کشیک", uz: "navbatchi", tr: "keshik" },
+                    { fa: "کی", uz: "kim", tr: "ki" },
+                    { fa: "جوان", uz: "yosh", tr: "javon" },
+                    { fa: "سالم", uz: "sog‘lom", tr: "solem" },
+                    { fa: "زیبا", uz: "chiroyli", tr: "zibo" },
+                    { fa: "هوا", uz: "havo", tr: "havo" },
+                    { fa: "گرم", uz: "issiq", tr: "garm" },
+                    { fa: "بیمار", uz: "kasal", tr: "bimor" },
+                    { fa: "دیگر", uz: "yana, boshqa", tr: "digar" },
+                    { fa: "روی", uz: "ustida, ustiga", tr: "ru-yi" },
+                    { fa: "تخته پاک کن", uz: "doska artadigan latta", tr: "taxte pak kon" }
+                ]
+            },
+            {
+                id: 5,
+                title: "5-dars",
+                words: [
+                    { fa: "بنا", uz: "bino, imorat", tr: "bano" },
+                    { fa: "ایرانی", uz: "eronlik", tr: "ironi" },
+                    { fa: "شاعر", uz: "shoir", tr: "shoer" },
+                    { fa: "بیمار", uz: "kasal", tr: "bimor" },
+                    { fa: "سالم", uz: "sog‘lom", tr: "solem" },
+                    { fa: "تشنه", uz: "chanqoq", tr: "tashne" },
+                    { fa: "ادبیات شناس", uz: "adabiyotshunos", tr: "adabiyotshenos" },
+                    { fa: "زبان شناس", uz: "tilchi", tr: "zabonshenos" },
+                    { fa: "هنرپیشه", uz: "artist", tr: "honarpishe" }
+                ]
+            },
+            {
+                id: 6,
+                title: "6-dars",
+                words: [
+                    { fa: "اسم", uz: "ism", tr: "esm" },
+                    { fa: "نام خانوادگی", uz: "familiya", tr: "nome-xonevodegi" },
+                    { fa: "پدر", uz: "ota", tr: "pedar" },
+                    { fa: "مادر", uz: "ona", tr: "modar" },
+                    { fa: "برادر", uz: "aka-uka", tr: "barodar" },
+                    { fa: "برادر بزرگ", uz: "aka", tr: "barodar-e bozorg" },
+                    { fa: "برادر کوچک", uz: "uka", tr: "barodar-e kuchek" },
+                    { fa: "خواهر", uz: "opa-singil", tr: "xohar" },
+                    { fa: "خواهر بزرگ", uz: "opa", tr: "xohar-e bozorg" },
+                    { fa: "خواهر کوچک", uz: "singil", tr: "xohar-e kuchek" },
+                    { fa: "کارمند علمی", uz: "ilmiy xodim", tr: "kormand-e 'elmi" },
+                    { fa: "کدام", uz: "qaysi", tr: "kodom" },
+                    { fa: "طب", uz: "tibbiyot, meditsina", tr: "tebb" },
+                    { fa: "به خانه داری", uz: "uy-ro‘zg‘or ishlari bilan", tr: "be xonedori" },
+                    { fa: "پاک", uz: "toza", tr: "pak" },
+                    { fa: "ماشین", uz: "mashina", tr: "moshin" },
+                    { fa: "سرد", uz: "sovuq", tr: "sard" },
+                    { fa: "ده", uz: "qishloq", tr: "deh" },
+                    { fa: "تمرین", uz: "mashq", tr: "tamrin" },
+                    { fa: "خانه داری", uz: "uy bekasi", tr: "xonedori" },
+                    { fa: "زبان", uz: "til", tr: "zabon" },
+                    { fa: "ادبیات", uz: "adabiyot", tr: "adabiyot" },
+                    { fa: "خیلی", uz: "juda", tr: "xeyli" },
+                    { fa: "کوشا", uz: "tirishqoq", tr: "kusho" },
+                    { fa: "کلمه", uz: "so‘z", tr: "kaleme" }
+                ]
+            },
+            {
+                id: 7,
+                title: "7-dars",
+                words: [
+                    { fa: "بزرگترین", uz: "eng katta", tr: "bozorgtarin" },
+                    { fa: "آسیای میانه", uz: "O‘rta Osiyo", tr: "osiyo-ye miyone" },
+                    { fa: "ثروتمند", uz: "boy", tr: "sarvatmand" },
+                    { fa: "عمده ترین", uz: "eng asosiy", tr: "omdetarin" },
+                    { fa: "فرهنگستان علوم", uz: "fanlar akademiyasi", tr: "farhangeston-e 'olum" },
+                    { fa: "متوسطه", uz: "o‘rta", tr: "motavassete" },
+                    { fa: "آموزشگاه", uz: "o‘quv yurti, ta'lim maskani", tr: "omuzeshgoh" },
+                    { fa: "مترو", uz: "metro", tr: "metro" },
+                    { fa: "برج تلویزیون", uz: "televizion minora", tr: "borj-e televizyo'n" },
+                    { fa: "تعداد", uz: "miqdor", tr: "te'dod" },
+                    { fa: "زیاد", uz: "ko‘p", tr: "ziyod" },
+                    { fa: "کودکستان", uz: "bolalar bog‘chasi", tr: "kudakeston" },
+                    { fa: "سینما", uz: "kino", tr: "sinemo" },
+                    { fa: "تاتر", uz: "teatr", tr: "teatr" },
+                    { fa: "موزه", uz: "muzey", tr: "muze" },
+                    { fa: "کاخ هنر", uz: "san'at saroyi", tr: "kox-e ho'nar" },
+                    { fa: "سایر", uz: "boshqa, bo‘lak", tr: "soyer" },
+                    { fa: "مؤسسات", uz: "muassasalar, tashkilotlar", tr: "mo'assesot" },
+                    { fa: "فرهنگی", uz: "madaniy", tr: "farhangi" },
+                    { fa: "مناظر", uz: "manzaralar", tr: "manazer" },
+                    { fa: "انجمن", uz: "uyushma", tr: "anjoman" },
+                    { fa: "دیدنی", uz: "diqqatga sazovor joylar", tr: "didani" },
+                    { fa: "جدید", uz: "yangi", tr: "jadid" },
+                    { fa: "چنان", uz: "shunday, shu darajada", tr: "cho'non" },
+                    { fa: "با سرعت", uz: "tezlik bilan", tr: "ba-sor'at" },
+                    { fa: "تغییر کردن", uz: "o‘zgartirmoq", tr: "tag'yir kardan" },
+                    { fa: "باعث", uz: "sabab", tr: "bois" },
+                    { fa: "تعجب", uz: "taajjub, hayron", tr: "ta'job" },
+                    { fa: "تعجب کردن", uz: "ajablanmoq, taajjublanmoq", tr: "ta'job kardan" },
+                    { fa: "خارجی", uz: "chet ellik, xorijiy", tr: "xoreji" },
+                    { fa: "بزرگی", uz: "kattalik, ulug‘lik", tr: "bozorgi" },
+                    { fa: "زیبایی", uz: "chiroylilik, go‘zallik", tr: "ziboyi" },
+                    { fa: "کشاورزی", uz: "qishloq xo‘jaligi", tr: "keshovarzi" }
+                ]
+            },
+            {
+                id: 8,
+                title: "8-dars (Matn so‘zlari)",
+                words: [
+                    { fa: "عزیز", uz: "aziz", tr: "aziz" },
+                    { fa: "سلام", uz: "salom", tr: "salom" },
+                    { fa: "سلام علیکم", uz: "salom alaykum", tr: "salom 'alayko'm" },
+                    { fa: "حال", uz: "hol-ahvol", tr: "hol" },
+                    { fa: "جمهوری", uz: "respublika", tr: "jo'mhuri" },
+                    { fa: "متشکرم", uz: "rahmat", tr: "motashakeram" },
+                    { fa: "از لطف شما", uz: "sizning iltifotingizdan", tr: "az lotf-e sho'mo" },
+                    { fa: "حالا", uz: "hozir, endi", tr: "holo" },
+                    { fa: "روز تعطیل", uz: "dam olish kuni", tr: "ruz-e ta'til" },
+                    { fa: "منزل", uz: "uy, manzil", tr: "manzel" },
+                    { fa: "دور", uz: "uzoq, olis", tr: "dur" },
+                    { fa: "نزدیک", uz: "yaqin", tr: "nazdik" },
+                    { fa: "چندم", uz: "nechanchi", tr: "chandom" },
+                    { fa: "سال چندم", uz: "nechanchi kurs", tr: "sol-e chandom" },
+                    { fa: "دانش آموز", uz: "maktab o‘quvchisi", tr: "daneshomuz" },
+                    { fa: "دیدار", uz: "ko‘rishish, uchrashish", tr: "didor" },
+                    { fa: "پزشکی", uz: "meditsina, tibbiyot", tr: "pezeshki" },
+                    { fa: "دبیرستان", uz: "o‘rta maktab", tr: "dabireston" },
+                    { fa: "تا دیدار", uz: "ko‘rishguncha", tr: "to didor" },
+                    { fa: "خوشحالم", uz: "xursandman", tr: "xoshholam" },
+                    { fa: "سلامت باشید", uz: "sog‘ bo‘ling", tr: "salomat boshid" },
+                    { fa: "خدا حافظ", uz: "xayr", tr: "xoda-hafiz" },
+                    { fa: "عضو", uz: "a'zo", tr: "ozv" },
+                    { fa: "حزب", uz: "partiya", tr: "hezb" },
+                    { fa: "پرچم", uz: "bayroq", tr: "parcham" }
+                ]
+            },
+            {
+                id: 9,
+                title: "9-dars",
+                words: [
+                    { fa: "از این قرار است", uz: "shundan iborat", tr: "az in qaror ast" },
+                    { fa: "مرکب", uz: "iborat, murakkab", tr: "morakkab" },
+                    { fa: "فصل", uz: "fasl", tr: "fasl" },
+                    { fa: "بهار", uz: "bahor", tr: "bahor" },
+                    { fa: "تابستان", uz: "yoz", tr: "tobeston" },
+                    { fa: "پاییز", uz: "kuz", tr: "poyiz" },
+                    { fa: "زمستان", uz: "qish", tr: "zemeston" },
+                    { fa: "ماه", uz: "oy", tr: "moh" },
+                    { fa: "ژانویه", uz: "yanvar", tr: "jonviye" },
+                    { fa: "فوريه", uz: "fevral", tr: "fevriye" },
+                    { fa: "مارس", uz: "mart", tr: "mors" },
+                    { fa: "اوريل", uz: "aprel", tr: "ovril" },
+                    { fa: "مه", uz: "may", tr: "me" },
+                    { fa: "ژوئن", uz: "iyun", tr: "juan" },
+                    { fa: "ژوئیه", uz: "iyul", tr: "juiye" },
+                    { fa: "اوت", uz: "avgust", tr: "ot" },
+                    { fa: "سپتامبر", uz: "sentabr", tr: "septombr" },
+                    { fa: "اكتبر", uz: "oktabr", tr: "oktober" },
+                    { fa: "نوامبر", uz: "noyabr", tr: "navombr" },
+                    { fa: "دسامبر", uz: "dekabr", tr: "desombr" },
+                    { fa: "هفته", uz: "hafta", tr: "hafte" },
+                    { fa: "روز", uz: "kun", tr: "ruz" },
+                    { fa: "پذیرش", uz: "qabul qilish", tr: "paziresh" },
+                    { fa: "قانون اساسی", "uz": "Konstitutsiya", tr: "qonun-e asosiy" },
+                    { fa: "نوروز", uz: "Navro‘z", tr: "no'uruz" },
+                    { fa: "اول", uz: "birinchi, avval", tr: "avval" },
+                    { fa: "روز تولد", uz: "tug‘ilgan kun", tr: "ruz-e tavallod" },
+                    { fa: "سرود", uz: "gimn, madhiya", tr: "sorud" },
+                    { fa: "استقلال یافتن", uz: "mustaqillikka erishmoq", tr: "esteqlol yaftan" }
+                ]
+            },
+            {
+                id: 10,
+                title: "10-dars",
+                words: [
+                    { fa: "حکایت", uz: "hikoya", tr: "hekoyat" },
+                    { fa: "افلاطون", uz: "Aflotun", tr: "aflotun" },
+                    { fa: "پرسیدن", uz: "so‘ramoq", tr: "porsidan" },
+                    { fa: "طى", uz: "mobaynida, davomida", tr: "tey-ye" },
+                    { fa: "چند", uz: "bir necha", tr: "chand" },
+                    { fa: "سفر کردن", uz: "safar qilmoq, sayohat qilmoq", tr: "safar kardan" },
+                    { fa: "دریا", uz: "dengiz", tr: "daryo" },
+                    { fa: "عجایب", uz: "ajoyibotlar", tr: "ajoyeb" },
+                    { fa: "دیدن", uz: "ko‘rmoq", tr: "didan" },
+                    { fa: "گفتن", uz: "demoq, aytmoq", tr: "goftan" },
+                    { fa: "عجب", uz: "ajablanarli", tr: "ajab" },
+                    { fa: "همین", uz: "shu, mana shu", tr: "hamin" },
+                    { fa: "بودن", uz: "bo‘lmoq, emoq", tr: "budan" },
+                    { fa: "ساحل", uz: "sohil, qirg‘oq", tr: "sohel" },
+                    { fa: "رسیدن", uz: "yetmoq, yetib kelmoq", tr: "rasidan" },
+                    { fa: "بعد", uz: "so‘ng, keyin", tr: "bad" },
+                    { fa: "صبح", uz: "ertalab", tr: "sobh" },
+                    { fa: "غروب", uz: "kech, quyosh botishi", tr: "gorub" },
+                    { fa: "صبحانه", uz: "nonushta, ertalabki ovqat", tr: "sobhone" }
+                ]
+            }
+            ,{ id: 11, title: "Qo‘shimcha so‘zlar (namuna)", words: [
+                { fa: "دوست", uz: "do‘st", tr: "dust" },
+                { fa: "مدرسه", uz: "maktab", tr: "madrese" },
+                { fa: "امروز", uz: "bugun", tr: "emruz" },
+                { fa: "فردا", uz: "ertaga", tr: "fardo" },
+                { fa: "دیروز", uz: "kecha", tr: "diruz" },
+                { fa: "آب", uz: "suv", tr: "ob" },
+                { fa: "نان", uz: "non", tr: "non" },
+                { fa: "شیر", uz: "sut", tr: "shir" },
+                { fa: "گل", uz: "gul", tr: "gol" },
+                { fa: "خانه", uz: "uy", tr: "xone" }
+            ] }
+        ];
+
+        // ================= APP STATE =================
+        let currentUnitIndex = 0;
+        let currentMode = 'cards';
+        let showAllPronunciations = false;
+
+        // Flashcard state
+        let fcDeck = [];
+        let fcIndex = 0;
+        let fcIsFlipped = false;
+
+        // Quiz state
+        let quizQuestions = [];
+        let quizCurrentIdx = 0;
+        let quizScore = 0;
+        let quizDirection = 'fa-uz';
+        let quizAnswered = false;
+
+        // Matching state
+        let matchingPairs = [];
+        let selectedPersianCard = null;
+        let selectedUzbekCard = null;
+        let matchingTimerInterval = null;
+        let matchingSeconds = 0;
+        let matchingMatchedCount = 0;
+
+        // Typing state
+        let typingDeck = [];
+        let typingIdx = 0;
+        let typingAnswered = false;
+
+        // ================= INITIALIZATION =================
+        window.onload = function() {
+            initUnitSelector();
+            initFlashcards();
+            renderVocabTable();
+            lucide.createIcons();
+        };
+
+        function initUnitSelector() {
+            const select = document.getElementById('unitSelector');
+            select.innerHTML = '';
+            UNITS_DATA.forEach((unit, idx) => {
+                const opt = document.createElement('option');
+                opt.value = idx;
+                opt.textContent = unit.title;
+                select.appendChild(opt);
+            });
+        }
+
+        function changeUnit(val) {
+            currentUnitIndex = parseInt(val);
+            document.getElementById('vocabSearchInput').value = '';
+            initFlashcards();
+            renderVocabTable();
+            if (currentMode === 'quiz') initQuiz();
+            if (currentMode === 'matching') initMatchingGame();
+            if (currentMode === 'typing') initTypingPractice();
+        }
+
+        function switchMode(mode) {
+            if (currentMode === 'matching' && mode !== 'matching') clearInterval(matchingTimerInterval);
+            currentMode = mode;
+            ['cards', 'quiz', 'matching', 'typing'].forEach(m => {
+                document.getElementById(`mode-${m}`).classList.add('hidden');
+                document.getElementById(`tab-${m}`).className = "flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap text-slate-600 hover:bg-slate-100";
+            });
+
+            document.getElementById(`mode-${mode}`).classList.remove('hidden');
+            document.getElementById(`tab-${mode}`).className = "flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap bg-rose-50 text-rose-600 shadow-xs";
+
+            if (mode === 'cards') initFlashcards();
+            if (mode === 'quiz') initQuiz();
+            if (mode === 'matching') initMatchingGame();
+            if (mode === 'typing') initTypingPractice();
+            lucide.createIcons();
+        }
+
+        // ================= SPOILER / PRONUNCIATION LOGIC =================
+        function toggleSpoiler(el) {
+            if (el.classList.contains('spoiler-blur')) {
+                el.classList.remove('spoiler-blur');
+                el.classList.add('spoiler-revealed');
+                el.title = "Yashirish uchun bosing";
+            } else {
+                el.classList.remove('spoiler-revealed');
+                el.classList.add('spoiler-blur');
+                el.title = "Ko‘rish uchun bosing";
+            }
+        }
+
+        function toggleGlobalPronunciation() {
+            showAllPronunciations = !showAllPronunciations;
+            const btn = document.getElementById('togglePronunciationBtn');
+            const label = document.getElementById('pronunciationStateText');
+            const icon = document.getElementById('pronunciationEyeIcon');
+
+            if (showAllPronunciations) {
+                label.textContent = "Ochiq";
+                btn.className = "flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-medium border transition-all bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100";
+                icon.setAttribute('data-lucide', 'eye');
+            } else {
+                label.textContent = "Spoyler (Xira)";
+                btn.className = "flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-medium border transition-all bg-slate-100 text-slate-700 border-slate-200 hover:bg-slate-200/70";
+                icon.setAttribute('data-lucide', 'eye-off');
+            }
+            lucide.createIcons();
+
+            resetSpoilerState(document.getElementById('fcPronunciationFront'));
+            resetSpoilerState(document.getElementById('quizQuestionHint'));
+            resetSpoilerState(document.getElementById('typingPronunciationSpoiler'));
+            renderVocabTable();
+            if (currentMode === 'quiz' && !quizAnswered && quizQuestions[quizCurrentIdx]) {
+                renderQuizQuestion();
+            }
+            if (currentMode === 'matching') {
+                document.querySelectorAll('.match-tr-spoiler').forEach(el => resetSpoilerState(el));
+            }
+        }
+
+        function resetSpoilerState(el) {
+            if (!el) return;
+            if (showAllPronunciations) {
+                el.classList.remove('spoiler-blur');
+                if (!el.classList.contains('spoiler-revealed')) el.classList.add('spoiler-revealed');
+                el.title = "Yashirish uchun bosing";
+            } else {
+                el.classList.remove('spoiler-revealed');
+                if (!el.classList.contains('spoiler-blur')) el.classList.add('spoiler-blur');
+                el.title = "Ko‘rish uchun bosing";
+            }
+        }
+
+        // ================= LOCAL STORAGE PROGRESS =================
+        function getProgressStorage() {
+            try {
+                return JSON.parse(localStorage.getItem('persian_vocab_progress')) || {};
+            } catch (e) {
+                return {};
+            }
+        }
+
+        function isWordMastered(unitId, origIdx) {
+            const prog = getProgressStorage();
+            return prog[unitId] && prog[unitId][origIdx];
+        }
+
+        function setWordMastered(unitId, origIdx, val) {
+            const prog = getProgressStorage();
+            if (!prog[unitId]) prog[unitId] = {};
+            prog[unitId][origIdx] = val;
+            localStorage.setItem('persian_vocab_progress', JSON.stringify(prog));
+        }
+
+        // ================= MODE 1: FLASHCARDS & TABLE =================
+        function initFlashcards() {
+            const unit = UNITS_DATA[currentUnitIndex];
+            fcDeck = unit.words.map((w, origIdx) => ({ ...w, origIdx }));
+            fcIndex = 0;
+            fcIsFlipped = false;
+            renderFlashcard();
+        }
+
+        function renderFlashcard() {
+            if (!fcDeck.length) return;
+            const unit = UNITS_DATA[currentUnitIndex];
+            const item = fcDeck[fcIndex];
+            const mastered = isWordMastered(unit.id, item.origIdx);
+
+            document.getElementById('flashcardCounter').textContent = `${fcIndex + 1} / ${fcDeck.length}`;
+            document.getElementById('fcPersian').textContent = item.fa;
+            document.getElementById('fcPersianMini').textContent = item.fa;
+            document.getElementById('fcUzbek').textContent = item.uz;
+
+            const frontPron = document.getElementById('fcPronunciationFront');
+            frontPron.textContent = `[ ${item.tr} ]`;
+            resetSpoilerState(frontPron);
+            document.getElementById('fcPronunciationBack').textContent = `O‘qilishi: ${item.tr}`;
+
+            const favBtn = document.getElementById('cardFavBtn');
+            favBtn.className = mastered ? "text-amber-500 transition" : "text-slate-300 hover:text-amber-500 transition";
+
+            fcIsFlipped = false;
+            document.getElementById('flashcardFront').classList.remove('hidden');
+            document.getElementById('flashcardBack').classList.add('hidden');
+        }
+
+        function flipFlashcard() {
+            fcIsFlipped = !fcIsFlipped;
+            const front = document.getElementById('flashcardFront');
+            const back = document.getElementById('flashcardBack');
+            if (fcIsFlipped) {
+                front.classList.add('hidden');
+                back.classList.remove('hidden');
+            } else {
+                back.classList.add('hidden');
+                front.classList.remove('hidden');
+            }
+        }
+
+        function nextFlashcard() {
+            if (fcIndex < fcDeck.length - 1) {
+                fcIndex++;
+            } else {
+                fcIndex = 0;
+            }
+            renderFlashcard();
+        }
+
+        function prevFlashcard() {
+            if (fcIndex > 0) {
+                fcIndex--;
+            } else {
+                fcIndex = fcDeck.length - 1;
+            }
+            renderFlashcard();
+        }
+
+        function markWordMastered() {
+            const unit = UNITS_DATA[currentUnitIndex];
+            const item = fcDeck[fcIndex];
+            const currentStatus = isWordMastered(unit.id, item.origIdx);
+            setWordMastered(unit.id, item.origIdx, !currentStatus);
+            renderFlashcard();
+            renderVocabTable();
+        }
+
+        function toggleTableMastered(origIdx) {
+            const unit = UNITS_DATA[currentUnitIndex];
+            const currentStatus = isWordMastered(unit.id, origIdx);
+            setWordMastered(unit.id, origIdx, !currentStatus);
+            renderVocabTable();
+            renderFlashcard();
+        }
+
+        function renderVocabTable(filter = '') {
+            const unit = UNITS_DATA[currentUnitIndex];
+            const tbody = document.getElementById('vocabTableBody');
+            tbody.innerHTML = '';
+
+            unit.words.forEach((w, origIdx) => {
+                if (filter && !w.fa.includes(filter) && !w.uz.toLowerCase().includes(filter.toLowerCase()) && !w.tr.toLowerCase().includes(filter.toLowerCase())) {
+                    return;
+                }
+                const mastered = isWordMastered(unit.id, origIdx);
+                const trClass = showAllPronunciations ? "spoiler-revealed" : "spoiler-blur";
+
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-50/80 transition";
+                tr.innerHTML = `
+                    <td class="py-3 px-4 text-center font-semibold text-slate-400 text-xs">${origIdx + 1}</td>
+                    <td class="py-3 px-4 text-right persian-text text-xl font-bold text-slate-900">${w.fa}</td>
+                    <td class="py-3 px-4 font-semibold text-slate-800">${w.uz}</td>
+                    <td class="py-3 px-4">
+                        <span onclick="toggleSpoiler(this)" class="${trClass} text-xs font-medium text-slate-600 inline-block" title="Ko‘rish uchun bosing">[ ${w.tr} ]</span>
+                    </td>
+                    <td class="py-3 px-4 text-center">
+                        <button onclick="toggleTableMastered(${origIdx})" class="p-1.5 rounded-xl transition ${mastered ? 'bg-amber-50 text-amber-500' : 'text-slate-300 hover:text-slate-500'}" title="Yodlangan deb belgilash">
+                            <i data-lucide="star" class="w-4 h-4 ${mastered ? 'fill-amber-500' : ''}"></i>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+            lucide.createIcons();
+        }
+
+        function filterVocabTable(val) {
+            renderVocabTable(val);
+        }
+
+        // ================= MODE 2: QUIZ =================
+        function initQuiz() {
+            const unit = UNITS_DATA[currentUnitIndex];
+            quizDirection = document.getElementById('quizDirectionSelect').value;
+            quizQuestions = unit.words
+                .map((w, origIdx) => ({ ...w, origIdx }))
+                .sort(() => Math.random() - 0.5);
+            quizCurrentIdx = 0;
+            quizScore = 0;
+            renderQuizQuestion();
+        }
+
+        function renderQuizQuestion() {
+            const unit = UNITS_DATA[currentUnitIndex];
+            const currentQ = quizQuestions[quizCurrentIdx];
+            quizAnswered = false;
+
+            const totalQ = quizQuestions.length;
+            document.getElementById('quizProgressText').textContent = `${quizCurrentIdx + 1} / ${totalQ}`;
+            document.getElementById('quizProgressBar').style.width = `${((quizCurrentIdx + 1) / totalQ) * 100}%`;
+
+            const wordEl = document.getElementById('quizQuestionWord');
+            const hintEl = document.getElementById('quizQuestionHint');
+            const labelEl = document.getElementById('quizPromptLabel');
+
+            if (quizDirection === 'fa-uz') {
+                labelEl.textContent = "O‘zbekcha tarjimasini tanlang";
+                wordEl.textContent = currentQ.fa;
+                wordEl.className = "persian-text text-4xl sm:text-5xl font-bold text-slate-900 py-1";
+                hintEl.textContent = `[ ${currentQ.tr} ]`;
+                hintEl.classList.remove('hidden');
+                resetSpoilerState(hintEl);
+            } else {
+                labelEl.textContent = "Forscha tarjimasini tanlang";
+                wordEl.textContent = currentQ.uz;
+                wordEl.className = "text-2xl sm:text-3xl font-extrabold text-slate-900 py-2";
+                hintEl.classList.add('hidden');
+            }
+
+            // Generate options (1 correct, 3 wrong)
+            const correctAnswer = quizDirection === 'fa-uz' ? currentQ.uz : currentQ.fa;
+            let wrongPool = unit.words.filter(w => (quizDirection === 'fa-uz' ? w.uz !== currentQ.uz : w.fa !== currentQ.fa));
+            wrongPool = wrongPool.filter((w, i, a) => a.findIndex(x => (quizDirection === 'fa-uz' ? x.uz : x.fa) === (quizDirection === 'fa-uz' ? w.uz : w.fa)) === i);
+            wrongPool.sort(() => Math.random() - 0.5);
+
+            let options = [correctAnswer];
+            for (let i = 0; i < Math.min(3, wrongPool.length); i++) {
+                options.push(quizDirection === 'fa-uz' ? wrongPool[i].uz : wrongPool[i].fa);
+            }
+            options.sort(() => Math.random() - 0.5);
+
+            const grid = document.getElementById('quizOptionsGrid');
+            grid.innerHTML = '';
+            options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = `p-4 rounded-2xl border border-slate-200 font-bold text-slate-700 bg-slate-50/50 hover:bg-slate-100 transition text-left flex items-center justify-between group ${quizDirection === 'uz-fa' ? 'persian-text text-xl' : 'text-base'}`;
+                btn.innerHTML = `<span>${opt}</span> <span class="w-6 h-6 rounded-full border border-slate-300 flex items-center justify-center text-xs text-slate-400 group-hover:border-rose-500 group-hover:text-rose-600 transition">✓</span>`;
+                btn.onclick = () => checkQuizAnswer(opt, correctAnswer, btn);
+                grid.appendChild(btn);
+            });
+
+            document.getElementById('quizNextBtn').classList.add('hidden');
+            lucide.createIcons();
+        }
+
+        function checkQuizAnswer(selected, correct, btnEl) {
+            if (quizAnswered) return;
+            quizAnswered = true;
+
+            const grid = document.getElementById('quizOptionsGrid');
+            const buttons = grid.getElementsByTagName('button');
+
+            for (let btn of buttons) {
+                btn.disabled = true;
+                const textSpan = btn.querySelector('span').textContent;
+                if (textSpan === correct) {
+                    btn.className = "p-4 rounded-2xl border border-emerald-500 font-bold bg-emerald-50 text-emerald-800 transition text-left flex items-center justify-between";
+                    btn.querySelector('span:last-child').className = "w-6 h-6 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xs";
+                } else if (btn === btnEl && selected !== correct) {
+                    btn.className = "p-4 rounded-2xl border border-rose-500 font-bold bg-rose-50 text-rose-800 transition text-left flex items-center justify-between";
+                    btn.querySelector('span:last-child').className = "w-6 h-6 rounded-full bg-rose-500 text-white flex items-center justify-center text-xs";
+                }
+            }
+
+            if (selected === correct) quizScore++;
+            document.getElementById('quizNextBtn').classList.remove('hidden');
+        }
+
+        function nextQuizQuestion() {
+            quizCurrentIdx++;
+            if (quizCurrentIdx < quizQuestions.length) {
+                renderQuizQuestion();
+            } else {
+                const grid = document.getElementById('quizOptionsGrid');
+                grid.innerHTML = `<div class="col-span-full text-center py-6"><div class="text-5xl mb-3">🏆</div><h3 class="text-2xl font-extrabold">Test yakunlandi!</h3><p class="mt-3 text-lg">Natija: <strong>${quizScore} / ${quizQuestions.length}</strong></p><button onclick="initQuiz()" class="mt-5 px-6 py-3 bg-rose-600 text-white font-bold rounded-xl">Qayta boshlash</button></div>`;
+                document.getElementById('quizNextBtn').classList.add('hidden');
+                document.getElementById('quizProgressText').textContent = `${quizQuestions.length} / ${quizQuestions.length}`;
+            }
+        }
+
+        // ================= MODE 3: MATCHING GAME =================
+        function initMatchingGame() {
+            const unit = UNITS_DATA[currentUnitIndex];
+            matchingPairs = unit.words.map((w, origIdx) => ({ ...w, origIdx }));
+            matchingPairs.sort(() => Math.random() - 0.5);
+            // Limit to max 8 pairs for smooth matching gameplay
+            if (matchingPairs.length > 8) {
+                matchingPairs = matchingPairs.slice(0, 8);
+            }
+            selectedPersianCard = null;
+            selectedUzbekCard = null;
+            matchingMatchedCount = 0;
+            matchingSeconds = 0;
+            
+            clearInterval(matchingTimerInterval);
+            document.getElementById('matchingTimer').textContent = "00:00";
+            matchingTimerInterval = setInterval(() => {
+                matchingSeconds++;
+                const mins = String(Math.floor(matchingSeconds / 60)).padStart(2, '0');
+                const secs = String(matchingSeconds % 60).padStart(2, '0');
+                document.getElementById('matchingTimer').textContent = `${mins}:${secs}`;
+            }, 1000);
+
+            renderMatchingGrid();
+        }
+
+        function renderMatchingGrid() {
+            const persianCol = document.getElementById('matchingPersianCol');
+            const uzbekCol = document.getElementById('matchingUzbekCol');
+            persianCol.innerHTML = '';
+            uzbekCol.innerHTML = '';
+
+            // Shuffle persian items
+            const shuffledPersian = [...matchingPairs].sort(() => Math.random() - 0.5);
+            // Shuffle uzbek items
+            const shuffledUzbek = [...matchingPairs].sort(() => Math.random() - 0.5);
+
+            shuffledPersian.forEach(item => {
+                const isMatched = item.matched;
+                const isSelected = selectedPersianCard === item.origIdx;
+                const trClass = showAllPronunciations ? "spoiler-revealed" : "spoiler-blur";
+
+                const div = document.createElement('div');
+                div.className = `p-3 rounded-2xl border transition flex items-center justify-between cursor-pointer select-none ${isMatched ? 'opacity-40 bg-slate-100 border-slate-200 pointer-events-none' : isSelected ? 'border-rose-500 bg-rose-50 shadow-sm' : 'border-slate-200 bg-white hover:border-slate-300'}`;
+                div.setAttribute('data-id', item.origIdx);
+                div.innerHTML = `
+                    <span class="persian-text text-xl font-bold text-slate-900">${item.fa}</span>
+                    <span onclick="event.stopPropagation(); toggleSpoiler(this)" class="${trClass} text-xs text-slate-600 match-tr-spoiler" title="Ko‘rish uchun bosing">[ ${item.tr} ]</span>
+                `;
+                if (!isMatched) {
+                    div.onclick = () => selectMatchingCard('fa', item.origIdx);
+                }
+                persianCol.appendChild(div);
+            });
+
+            shuffledUzbek.forEach(item => {
+                const isMatched = item.matched;
+                const isSelected = selectedUzbekCard === item.origIdx;
+
+                const div = document.createElement('div');
+                div.className = `p-3 rounded-2xl border transition flex items-center justify-between cursor-pointer select-none ${isMatched ? 'opacity-40 bg-slate-100 border-slate-200 pointer-events-none' : isSelected ? 'border-rose-500 bg-rose-50 shadow-sm' : 'border-slate-200 bg-white hover:border-slate-300'}`;
+                div.setAttribute('data-id', item.origIdx);
+                div.innerHTML = `
+                    <span class="font-bold text-slate-800 text-sm">${item.uz}</span>
+                    <span class="w-5 h-5 rounded-full border border-slate-200 flex items-center justify-center text-xs text-slate-300">✓</span>
+                `;
+                if (!isMatched) {
+                    div.onclick = () => selectMatchingCard('uz', item.origIdx);
+                }
+                uzbekCol.appendChild(div);
+            });
+            lucide.createIcons();
+        }
+
+        function selectMatchingCard(type, origIdx) {
+            if (type === 'fa') {
+                selectedPersianCard = origIdx;
+            } else {
+                selectedUzbekCard = origIdx;
+            }
+
+            renderMatchingGrid();
+
+            if (selectedPersianCard !== null && selectedUzbekCard !== null) {
+                if (selectedPersianCard === selectedUzbekCard) {
+                    // Correct match
+                    const pair = matchingPairs.find(p => p.origIdx === selectedPersianCard);
+                    pair.matched = true;
+                    matchingMatchedCount++;
+                    selectedPersianCard = null;
+                    selectedUzbekCard = null;
+                    renderMatchingGrid();
+
+                    if (matchingMatchedCount === matchingPairs.length) {
+                        clearInterval(matchingTimerInterval);
+                        setTimeout(() => {
+                            alert(`Tabriklayman! Barcha juftliklarni ${document.getElementById('matchingTimer').textContent} vaqt ichida topdingiz!`);
+                        }, 200);
+                    }
+                } else {
+                    // Wrong match
+                    const pEl = document.querySelector(`#matchingPersianCol > div[data-id="${selectedPersianCard}"]`);
+                    const uEl = document.querySelector(`#matchingUzbekCol > div[data-id="${selectedUzbekCard}"]`);
+
+                    if (pEl) pEl.classList.add('border-rose-500', 'bg-rose-50');
+                    if (uEl) uEl.classList.add('border-rose-500', 'bg-rose-50');
+
+                    setTimeout(() => {
+                        selectedPersianCard = null;
+                        selectedUzbekCard = null;
+                        renderMatchingGrid();
+                    }, 500);
+                }
+            }
+        }
+
+        // ================= MODE 4: TYPING PRACTICE =================
+        function initTypingPractice() {
+            const unit = UNITS_DATA[currentUnitIndex];
+            typingDeck = unit.words
+                .map((w, origIdx) => ({ ...w, origIdx }))
+                .sort(() => Math.random() - 0.5);
+            typingIdx = 0;
+            document.getElementById('typingSubmitBtn').disabled = false;
+            renderTypingWord();
+        }
+
+        function renderTypingWord() {
+            const item = typingDeck[typingIdx];
+            typingAnswered = false;
+
+            document.getElementById('typingCounter').textContent = `${typingIdx + 1} / ${typingDeck.length}`;
+            document.getElementById('typingPersianWord').textContent = item.fa;
+            const typingSpoiler = document.getElementById('typingPronunciationSpoiler');
+            typingSpoiler.textContent = `[ ${item.tr} ]`;
+            resetSpoilerState(typingSpoiler);
+            document.getElementById('typingHintBox').classList.add('hidden');
+
+            const input = document.getElementById('typingInput');
+            input.value = '';
+            input.disabled = false;
+            input.focus();
+            document.getElementById('typingSubmitBtn').textContent = "Tekshirish";
+        }
+
+        function checkTypingAnswer(e) {
+            e.preventDefault();
+            if (typingAnswered) {
+                typingIdx++;
+                if (typingIdx < typingDeck.length) {
+                    renderTypingWord();
+                } else {
+                    document.getElementById('typingHintBox').className = "mt-4 w-full p-4 rounded-2xl text-center font-bold text-sm bg-emerald-50 text-emerald-800";
+                    document.getElementById('typingHintBox').textContent = "🎉 Mashq yakunlandi! Qayta boshlash tugmasini bosing.";
+                    document.getElementById('typingSubmitBtn').disabled = true;
+                }
+                return;
+            }
+
+            const input = document.getElementById('typingInput');
+            const userAns = input.value.trim().toLowerCase();
+            if (!userAns) return;
+            const correctUz = typingDeck[typingIdx].uz.toLowerCase();
+
+            // Simple match check (allowing partial or comma separated matches)
+            const isCorrect = correctUz.split(',').some(part => userAns === part.trim());
+            typingAnswered = true;
+            input.disabled = true;
+
+            const hintBox = document.getElementById('typingHintBox');
+            hintBox.classList.remove('hidden');
+
+            if (isCorrect) {
+                hintBox.className = "mt-4 w-full p-4 rounded-2xl text-center font-bold text-sm bg-emerald-50 text-emerald-800 border border-emerald-200";
+                hintBox.textContent = "To‘g‘ri! 🌟";
+            } else {
+                hintBox.className = "mt-4 w-full p-4 rounded-2xl text-center font-bold text-sm bg-rose-50 text-rose-800 border border-rose-200";
+                hintBox.textContent = `Noto‘g‘ri. To‘g‘ri javob: ${typingDeck[typingIdx].uz}`;
+            }
+
+            document.getElementById('typingSubmitBtn').textContent = "Keyingi so‘z";
+        }
+    </script>
+</body>
+</html>
